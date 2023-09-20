@@ -77,17 +77,16 @@ ul {
   font-weight: bold;
 }
 
-.instrument__delta.gain {
-  color: rgb(2, 113, 2);
-}
-
-.instrument__delta.loss {
-  color: rgba(255, 0, 0, 0.674);
-}
-
 .instrument__logo {
   border-radius: 50%;
   vertical-align: middle;
   padding-right: 5px;
 }
 
+.gain {
+  color: rgb(2, 113, 2);
+}
+
+.loss {
+  color: rgba(255, 0, 0, 0.674);
+}

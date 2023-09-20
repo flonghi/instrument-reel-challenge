@@ -27,7 +27,6 @@ function useInstruments(instrumentSymbols: InstrumentSymbol[]) {
   /**
    * ✅ You can edit inside the body of this hook
    */
-
   const [socketData, setSocketData] = useState<InstrumentEnriched[]>([]);
 
   useEffect(() => {
@@ -44,7 +43,7 @@ function useInstruments(instrumentSymbols: InstrumentSymbol[]) {
       });
       setSocketData(newValues);
     });
-  }, [instrumentSymbols]);
+  }, [instrumentSymbols, setSocketData, socketData]);
 
   return socketData;
 }
@@ -56,16 +55,15 @@ function InstrumentDetail({ instrument }: InstrumentDetailProps) {
   const { category, code, delta, lastQuote, name } = instrument;
   const logoPath = getInstrumentLogoPath(category, code);
 
+  const quoteClass = delta === 0 ? '' : delta > 0 ? 'gain' : 'loss';
   return (
     <div className="instrument__detail">
       <img className="instrument__logo" src={logoPath} />{' '}
       <span className="instrument__name">{name}</span>{' '}
-      <span className="instrument__last_quote">{lastQuote}</span>{' '}
-      <span
-        className={`instrument__delta ${
-          delta === 0 ? '' : delta > 0 ? 'gain' : 'loss'
-        }`}
-      >
+      <span className={`instrument__last_quote ${quoteClass}`}>
+        {lastQuote}
+      </span>{' '}
+      <span className={`instrument__delta ${quoteClass}`}>
         {formatDelta(delta)}%
       </span>
     </div>
