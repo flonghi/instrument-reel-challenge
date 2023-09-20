@@ -52,7 +52,7 @@
 
 /* Other page demo styles */
 .marquee__content > * {
-  width: 275px;
+  width: 285px;
   color: white;
 }
 
@@ -83,6 +83,11 @@ ul {
   border-radius: 50%;
   vertical-align: middle;
   padding-right: 5px;
+}
+
+.instrument__logo.overlapped {
+  margin-left: -16px;
+  margin-top: -2px;
 }
 
 .gain {

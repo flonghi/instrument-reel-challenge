@@ -52,14 +52,33 @@ interface InstrumentDetailProps {
   instrument: InstrumentEnriched;
 }
 function InstrumentDetail({ instrument }: InstrumentDetailProps) {
-  const { category, code, delta, lastQuote, name } = instrument;
-  const logoPath = getInstrumentLogoPath(category, code);
+  const { category, code, delta, lastQuote, name, pair } = instrument;
 
   const quoteClass = delta === 0 ? '' : delta > 0 ? 'gain' : 'loss';
   return (
     <div className="instrument__detail">
       <span className="instrument__name">
-        <img className="instrument__logo" src={logoPath} /> {name}
+        {category !== 'forex' ? (
+          <img
+            className="instrument__logo"
+            alt={code}
+            src={getInstrumentLogoPath(category, code)}
+          />
+        ) : (
+          <span>
+            <img
+              className="instrument__logo"
+              alt={pair[1]}
+              src={getInstrumentLogoPath(category, pair[1])}
+            />
+            <img
+              className="instrument__logo overlapped"
+              alt={pair[0]}
+              src={getInstrumentLogoPath(category, pair[0])}
+            />
+          </span>
+        )}
+        {name}
       </span>{' '}
       <span className={`instrument__last_quote ${quoteClass}`}>
         {lastQuote.toFixed(2)}
