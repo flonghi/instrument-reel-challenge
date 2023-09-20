@@ -52,7 +52,7 @@
 
 /* Other page demo styles */
 .marquee__content > * {
-  width: 270px;
+  width: 275px;
   color: white;
 }
 
@@ -63,6 +63,8 @@ ul {
 }
 
 .instrument__detail {
+ display: flex;
+ justify-content: space-between;
  padding: 5px;
  border-right: 1px solid rgb(53, 53, 53);
  border-left: 1px solid rgb(53, 53, 53);

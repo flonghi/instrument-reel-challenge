@@ -58,10 +58,11 @@ function InstrumentDetail({ instrument }: InstrumentDetailProps) {
   const quoteClass = delta === 0 ? '' : delta > 0 ? 'gain' : 'loss';
   return (
     <div className="instrument__detail">
-      <img className="instrument__logo" src={logoPath} />{' '}
-      <span className="instrument__name">{name}</span>{' '}
+      <span className="instrument__name">
+        <img className="instrument__logo" src={logoPath} /> {name}
+      </span>{' '}
       <span className={`instrument__last_quote ${quoteClass}`}>
-        {lastQuote}
+        {lastQuote.toFixed(2)}
       </span>{' '}
       <span className={`instrument__delta ${quoteClass}`}>
         {formatDelta(delta)}%
