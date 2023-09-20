@@ -5,9 +5,15 @@
 /**
  * ✅ You can add/edit these imports
  */
-import { InstrumentSymbol } from "../../common-leave-me";
-import { InstrumentSocketClient } from "./InstrumentSocketClient";
-import "./InstrumentReel.css";
+import { useEffect, useState } from 'react';
+import { Instrument, InstrumentSymbol } from '../../common-leave-me';
+import { InstrumentSocketClient } from './InstrumentSocketClient';
+import './InstrumentReel.css';
+import { calculateDelta, formatDelta, getInstrumentLogoPath } from './utils';
+
+export interface InstrumentEnriched extends Instrument {
+  delta: number;
+}
 
 /**
  * ❌ Please do not edit this
@@ -21,6 +27,49 @@ function useInstruments(instrumentSymbols: InstrumentSymbol[]) {
   /**
    * ✅ You can edit inside the body of this hook
    */
+
+  const [socketData, setSocketData] = useState<InstrumentEnriched[]>([]);
+
+  useEffect(() => {
+    return client.subscribe(instrumentSymbols, (instruments: Instrument[]) => {
+      const newValues = instruments.map((instrument) => {
+        const oldInstrument = socketData.find(
+          (inst) => inst.code === instrument.code
+        );
+        const delta = oldInstrument
+          ? calculateDelta(oldInstrument.lastQuote, instrument.lastQuote)
+          : 0;
+
+        return { ...instrument, delta };
+      });
+      setSocketData(newValues);
+    });
+  }, [instrumentSymbols]);
+
+  return socketData;
+}
+
+interface InstrumentDetailProps {
+  instrument: InstrumentEnriched;
+}
+function InstrumentDetail({ instrument }: InstrumentDetailProps) {
+  const { category, code, delta, lastQuote, name } = instrument;
+  const logoPath = getInstrumentLogoPath(category, code);
+
+  return (
+    <div className="instrument__detail">
+      <img className="instrument__logo" src={logoPath} />{' '}
+      <span className="instrument__name">{name}</span>{' '}
+      <span className="instrument__last_quote">{lastQuote}</span>{' '}
+      <span
+        className={`instrument__delta ${
+          delta === 0 ? '' : delta > 0 ? 'gain' : 'loss'
+        }`}
+      >
+        {formatDelta(delta)}%
+      </span>
+    </div>
+  );
 }
 
 export interface InstrumentReelProps {
@@ -38,7 +87,28 @@ function InstrumentReel({ instrumentSymbols }: InstrumentReelProps) {
    * Please feel free to add more components to this file or other files if you want to.
    */
 
-  return <div>Instrument Reel</div>;
+  return (
+    <div className="enable-animation reel__container">
+      {instruments.length > 0 && (
+        <div className="marquee">
+          <ul className="marquee__content">
+            {instruments.map((instrument) => (
+              <li key={instrument.code}>
+                <InstrumentDetail instrument={instrument} />
+              </li>
+            ))}
+          </ul>
+          <ul className="marquee__content" aria-hidden="true">
+            {instruments.map((instrument) => (
+              <li key={instrument.code}>
+                <InstrumentDetail instrument={instrument} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default InstrumentReel;

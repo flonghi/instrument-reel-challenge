@@ -1,3 +1,93 @@
 /**
  * ✅ You can edit this file to add your own styles.
  */
+
+ .reel__container {
+  width: 100%;
+}
+
+ .marquee {
+  --gap: 1rem;
+  position: relative;
+  display: flex;
+  align-content: flex-start;
+  overflow: hidden;
+  user-select: none;
+  background-color: rgb(33, 33, 33);
+  border: 1px solid rgb(53, 53, 53);
+}
+
+.marquee__content {
+  flex-shrink: 0;
+  display: flex;
+  justify-content:left;
+  min-width: 100%;
+}
+
+/* Enable animation */
+.enable-animation .marquee__content {
+  animation: scroll 25s linear infinite;
+}
+
+/* Pause on hover */
+.marquee:hover .marquee__content {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+/* Pause animation when reduced-motion is set */
+@media (prefers-reduced-motion: reduce) {
+  .marquee__content {
+    animation-play-state: paused !important;
+  }
+}
+
+/* Other page demo styles */
+.marquee__content > * {
+  width: 270px;
+  color: white;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.instrument__detail {
+ padding: 5px;
+ border-right: 1px solid rgb(53, 53, 53);
+ border-left: 1px solid rgb(53, 53, 53);
+ vertical-align: middle;
+}
+
+.instrument__detail:hover {
+  background-color: rgb(77, 76, 76);
+}
+
+.instrument__name {
+  font-weight: bold;
+}
+
+.instrument__delta.gain {
+  color: rgb(2, 113, 2);
+}
+
+.instrument__delta.loss {
+  color: rgba(255, 0, 0, 0.674);
+}
+
+.instrument__logo {
+  border-radius: 50%;
+  vertical-align: middle;
+  padding-right: 5px;
+}
+
